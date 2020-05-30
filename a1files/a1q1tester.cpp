@@ -9,7 +9,7 @@
 /*                                                                        */
 /**************************************************************************/
 
-#include "sortedlist.completed.h"
+#include "sortedlist.h"
 #include "timer.h"
 #include <string>
 #include <iostream>
