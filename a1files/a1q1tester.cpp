@@ -5,7 +5,8 @@
 /*   To compile: g++ a1q1tester.cpp timer.cpp -std=c++0x                  */
 /*                                                                        */
 /*                                                                        */
-/*   version: 1.0                                                         */
+/*   version: 1.1: Fixed include for correct sortedlist.h, added          */
+/*                 include for cstring                                    */
 /*                                                                        */
 /**************************************************************************/
 
@@ -14,7 +15,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
-
+#include <cstring>
 
 bool test1(std::string& error); 
 bool test2(std::string& error); 
