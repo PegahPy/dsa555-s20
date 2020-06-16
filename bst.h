@@ -20,7 +20,7 @@ class BST{
 	void printInOrder(const Node* subtreeroot) const{
 		if(subtreeroot!=nullptr){
 			printInOrder(subtreeroot->left_);
-			std::cout << subtreeroot << " ";
+			std::cout << subtreeroot->data_ << " ";
 			printInOrder(subtreeroot->right_);
 		}
 	}
@@ -28,7 +28,7 @@ class BST{
 	/* this function prints all the nodes in preorder manner*/
 	void printPreOrder(const Node* subtreeroot) const{
 		if(subtreeroot!=nullptr){
-			std::cout << subtreeroot << " ";
+			std::cout << subtreeroot->data_ << " ";
 			printPreOrder(subtreeroot->left_);
 			printPreOrder(subtreeroot->right_);
 		}
@@ -39,19 +39,34 @@ class BST{
 		if(subtreeroot!=nullptr){
 			printPostOrder(subtreeroot->left_);
 			printPostOrder(subtreeroot->right_);
-			std::cout << subtreeroot << " ";
+			std::cout << subtreeroot->data_ << " ";
+		}
+	}
+	void destroy(Node* subtreeroot){
+		if(subtreeroot!=nullptr){
+			destroy(subtreeroot->left_);
+			destroy(subtreeroot->right_);
+			delete subtreeroot;
 		}
 	}
 
+	//if subtree is empty, create new node for that subtree
+	//otherwise, insert based on whether data is smaller
+	//or bigger than the value in the root of the subtree
+	void insert(subtreeroot,data){
 
+	}
 public:
 	//creates an empty BST
 	BST(){
 		root_=nullptr;
-	}   
-
-	//inserts data into the tree
+	}
+	//insert data into the tree   
 	void insert(const T& data){
+
+	}
+	//inserts data into the tree
+	void insertIterative(const T& data){
 		if(root_==nullptr){
 			root_= new Node(data);
 		}
@@ -103,14 +118,17 @@ public:
 	//prints all the values in the tree
 	void printInOrder() const{
 		printInOrder(root_);
+		std::cout << std::endl;		
 	}
 	//prints all the values in the tree
 	void printPreOrder() const{
 		printPreOrder(root_);
+		std::cout << std::endl;		
 	}
 	//prints all the values in the tree
 	void printPostOrder() const{
 		printPostOrder(root_);
+		std::cout << std::endl;		
 	}
 
 	//prints all the values in the tree
@@ -128,12 +146,15 @@ public:
 					theQueue.enqueue(curr->right_);
 			}
 		}
+		std::cout << std::endl;		
 
 	}
 
 	//destructor is a tree traversal.  Before you get rid of
 	//current node you must first get rid of the children
-	~BST();
+	~BST(){
+		destroy(root_);
+	}
 };
 
 
