@@ -1,3 +1,8 @@
+//Pegah Samari
+//132874181
+//Lab 7 
+
+
 #include <iostream>
 #include <iomanip>
 
@@ -114,11 +119,128 @@ public:
 		root_=nullptr;
 	}
 	BST(const BST& rhs){
+		root_ = clone(rhs.root_);
 	}
-	void remove(const T& data){
+	Node  *clone(Node* root)
+	{
+		if (root == NULL) {
+			return root;
+		}
+		Node *temp = (Node *)malloc(sizeof(Node));
+		temp->data_ = root->data_;    
+		temp->left_ = clone(root->left_);    
+		temp->right_ = clone(root->right_);  
+		return temp;
+	}
+
+	void remove(const T& data)
+	{
+		removeR(root_, data);
+	}
+	Node* minimumKey(Node* curr)
+	{
+		while (curr->left_ != nullptr) {
+			curr = curr->left_;
+		}
+		return curr;
+	}
+	void removeR(Node*& root, const T& data){
+		Node* parent = nullptr;
+
+		Node* curr = root;
+
+		while (curr != nullptr && curr->data_ != data)
+		{
+			parent = curr;
+
+			if (data < curr->data_)
+				curr = curr->left_;
+			else
+				curr = curr->right_;
+		}
+
+		if (curr == nullptr)
+			return;
+
+		// Case 1: node to be deleted has no children
+		if (curr->left_ == nullptr && curr->right_ == nullptr)
+		{
+			if (curr != root)
+			{
+				if (parent->left_ == curr)
+					parent->left_ = nullptr;
+				else
+					parent->right_ = nullptr;
+			}
+			else
+				root = nullptr;
+
+			free(curr);	 
+		}
+
+		// Case 2: node to be deleted has two children
+		else if (curr->left_ && curr->right_)
+		{
+			Node* successor = minimumKey(curr->right_);
+
+			int val = successor->data_;
+
+			removeR(root, successor->data_);
+
+			curr->data_ = val;
+		}
+
+		// Case 3: node to be deleted has only one child
+		else
+		{
+			Node* child = (curr->left_) ? curr->left_ : curr->right_;
+
+			if (curr != root)
+			{
+				if (curr == parent->left_)
+					parent->left_ = child;
+				else
+					parent->right_ = child;
+			}
+
+			else
+				root = child;
+
+			free(curr);
+		}
 	}
 
 	int depth(const T& data){
+		Queue<Node*> q;
+		int level = 0;
+		q.enqueue(root_);
+
+		// extra NULL is pushed to keep track 
+		// of all the nodes to be pushed before 
+		// level is incremented by 1 
+		q.enqueue(NULL);
+		while (!q.isEmpty()) {
+			Node* temp = q.front();
+			q.dequeue();
+			if (temp == NULL) {
+				if (q.front() != NULL) {
+					q.enqueue(NULL);
+				}
+				level += 1;
+			}
+			else {
+				if (temp->data_ == data) {
+					return level;
+				}
+				if (temp->left_) {
+					q.enqueue(temp->left_);
+				}
+				if (temp->right_) {
+					q.enqueue(temp->right_);
+				}
+			}
+		}
+		return -1;
 	}
 
 
@@ -141,7 +263,6 @@ public:
 			Node* curr=root_;
 			while(curr != nullptr){
 				if(data < curr->data_){
-					//go left
 					if(curr->left_){
 						curr=curr->left_;
 					}
@@ -151,7 +272,6 @@ public:
 					}
 				}	
 				else{
-					//go right
 					if(curr->right_){
 						curr=curr->right_;
 					}
